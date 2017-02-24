@@ -34,6 +34,7 @@ function run_timestep(state::welfare, t::Int)
     end
 
     #Define function for UTILITY
-    v.UTILITY = 5 * p.scale1 * v.CUMCEMUTOTPER[60] + p.scale2
-
+    if t==60
+        v.UTILITY = 5 * p.scale1 * v.CUMCEMUTOTPER[60] + p.scale2
+    end
 end
