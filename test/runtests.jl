@@ -2,8 +2,7 @@ using Base.Test
 using Mimi
 using ExcelReaders
 
-include("dice2013.jl")
-include("helpers.jl")
+include("../src/dice2013.jl")
 
 m = getdice();
 run(m)
