@@ -14,7 +14,7 @@ using Mimi
 end
 
 
-function timestep(state::emissions, t::Int)
+function run_timestep(state::emissions, t::Int)
     v = state.Variables
     p = state.Parameters
 

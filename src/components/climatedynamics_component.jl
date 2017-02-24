@@ -17,7 +17,7 @@ using Mimi
 end
 
 
-function timestep(state::climatedynamics, t::Int)
+function run_timestep(state::climatedynamics, t::Int)
     v = state.Variables
     p = state.Parameters
 

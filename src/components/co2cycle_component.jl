@@ -23,7 +23,7 @@ using Mimi
  end
 
 
-function timestep(state::co2cycle, t::Int)
+function run_timestep(state::co2cycle, t::Int)
     v = state.Variables
     p = state.Parameters
 

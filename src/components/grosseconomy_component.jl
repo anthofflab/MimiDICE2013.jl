@@ -15,7 +15,7 @@ using Mimi
 end
 
 
-function timestep(state::grosseconomy, t::Int)
+function run_timestep(state::grosseconomy, t::Int)
     v = state.Variables
     p = state.Parameters
 

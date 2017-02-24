@@ -24,7 +24,7 @@ using Mimi
 end
 
 
-function timestep(state::neteconomy, t::Int)
+function run_timestep(state::neteconomy, t::Int)
     v = state.Variables
     p = state.Parameters
 

@@ -10,7 +10,7 @@ using Mimi
 
 end
 
-function timestep(state::radiativeforcing, t::Int)
+function run_timestep(state::radiativeforcing, t::Int)
     v = state.Variables
     p = state.Parameters
 
