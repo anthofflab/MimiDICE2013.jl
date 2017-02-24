@@ -59,7 +59,7 @@ function constructdice(p)
 
     m = Model()
 
-    setindex(m, :time, [2010:5:2305])
+    setindex(m, :time, collect(2010:5:2305))
 
     addcomponent(m, grosseconomy)
     addcomponent(m, emissions)
