@@ -161,7 +161,7 @@ function constructdice(p)
 end
 
 
-function getdice(;datafile = "../Data/DICE_2013_Excel.xlsm")
+function getdice(;datafile = joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm"))
     params = getdice2013parameters(datafile)
 
     m=constructdice(params)

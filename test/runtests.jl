@@ -7,7 +7,7 @@ include("../src/dice2013.jl")
 m = getdice();
 run(m)
 
-f=openxl("../Data/DICE_2013_Excel.xlsm")
+f=openxl(joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm"))
 
 #Test Precision
 Precision = 1.0e-11
