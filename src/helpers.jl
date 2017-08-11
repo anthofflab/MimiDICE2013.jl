@@ -22,8 +22,6 @@ end
 
 function getparams(f, range::String, parameters::Symbol, sheet::String, T)
 
-    #f = openxl(joinpath("../Data", "DICE_2013_Excel.xlsm"))
-
     if parameters == :single
         vals= Float64
             data=readxl(f,"$sheet\!$range")
