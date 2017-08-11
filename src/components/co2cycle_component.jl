@@ -31,21 +31,21 @@ function run_timestep(state::co2cycle, t::Int)
     if t==1
         v.MAT[t] = p.mat0
     else
-        v.MAT[t] = v.MAT[t-1] * p.b11/100 + v.MU[t-1] * p.b21/100 + (p.E[t-1]*(5/3.666))
+        v.MAT[t] = v.MAT[t-1] * p.b11 + v.MU[t-1] * p.b21 + (p.E[t-1]*(5/3.666))
     end
 
     #Define function for MU
     if t==1
         v.MU[t] = p.mu0
     else
-        v.MU[t] = v.MAT[t-1] * p.b12/100 + v.MU[t-1] * p.b22/100 + v.ML[t-1] * p.b32/100
+        v.MU[t] = v.MAT[t-1] * p.b12 + v.MU[t-1] * p.b22 + v.ML[t-1] * p.b32
     end
 
     #Define function for ML
     if t==1
         v.ML[t] = p.ml0
     else
-        v.ML[t] = v.ML[t-1] * p.b33/100 + v.MU[t-1] * p.b23/100
+        v.ML[t] = v.ML[t-1] * p.b33 + v.MU[t-1] * p.b23
     end
 
 end
