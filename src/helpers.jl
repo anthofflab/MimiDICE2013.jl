@@ -29,7 +29,7 @@ function getparams(f, range::String, parameters::Symbol, sheet::String, T)
         return vals
 
     elseif parameters == :all
-        vals= Array(Float64,T)
+        vals= Array{Float64}(T)
 
             data=readxl(f,"$sheet\!$range")
                 for i=1:T
