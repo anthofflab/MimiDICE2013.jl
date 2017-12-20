@@ -1,9 +1,9 @@
 include("dice2013.jl")
 
 function getmarginal_dice_models(;emissionyear=2010)
-    m1 = getdice()
+    m1 = getdiceexcel()
 
-    m2 = getdice()
+    m2 = getdiceexcel()
     addcomponent(m2, adder, :marginalemission, before=:co2cycle)
     addem = zeros(60)
     addem[getindexfromyear_dice_2013(emissionyear)] = 1.0
