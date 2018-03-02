@@ -7,7 +7,7 @@ using Mimi
 
     TATM    = Parameter(index=[time])   #Increase temperature of atmosphere (degrees C from 1900)
     YGROSS  = Parameter(index=[time])   #Gross world product GROSS of abatement and damages (trillions 2005 USD per year)
-    a1      = Parameter()               #Damage intercept
+    a1      = Parameter()               #Damage coefficient
     a2      = Parameter()               #Damage quadratic term
     a3      = Parameter()               #Damage exponent
     damadj  = Parameter()               #Adjustment exponent in damage function
