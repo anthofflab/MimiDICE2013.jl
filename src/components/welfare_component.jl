@@ -1,6 +1,5 @@
 using Mimi
 
-
 @defcomp welfare begin
     CEMUTOTPER      = Variable(index=[time])    #Period utility
     CUMCEMUTOTPER   = Variable(index=[time])    #Cumulative period utility
@@ -13,28 +12,26 @@ using Mimi
     elasmu          = Parameter()               #Elasticity of marginal utility of consumption
     scale1          = Parameter()               #Multiplicative scaling coefficient
     scale2          = Parameter()               #Additive scaling coefficient
-end
 
-
-function run_timestep(state::welfare, t::Int)
-    v = state.Variables
-    p = state.Parameters
-
-    #Define function for PERIODU
-    v.PERIODU[t] = (p.CPC[t] ^ (1 - p.elasmu) - 1) / (1 - p.elasmu) - 1
-
-    #Define function for CEMUTOTPER
-    v.CEMUTOTPER[t] = v.PERIODU[t] * p.l[t] * p.rr[t]
-
-    #Define function for CUMCEMUTOTPER
-    if t ==1
-        v.CUMCEMUTOTPER[t] = v.CEMUTOTPER[t]
-    else
-        v.CUMCEMUTOTPER[t] = v.CUMCEMUTOTPER[t-1] + v.CEMUTOTPER[t]
+    function init(p, v, d)
     end
 
-    #Define function for UTILITY
-    if t==60
-        v.UTILITY = 5 * p.scale1 * v.CUMCEMUTOTPER[60] + p.scale2
+    function run(p, v, d, t)
+        # Define function for PERIODU
+        v.PERIODU[t] = (p.CPC[t] ^ (1 - p.elasmu) - 1) / (1 - p.elasmu) - 1
+
+        # Define function for CEMUTOTPER
+        v.CEMUTOTPER[t] = v.PERIODU[t] * p.l[t] * p.rr[t]
+
+        # Define function for CUMCEMUTOTPER
+        v.CUMCEMUTOTPER[t] = v.CEMUTOTPER[t] + (t > 1 ? v.CUMCEMUTOTPER[t-1] : 0)
+
+        # Define function for UTILITY
+        if t == 60
+            v.UTILITY = 5 * p.scale1 * v.CUMCEMUTOTPER[t] + p.scale2
+
+            utility = 5 * p.scale1 * v.CUMCEMUTOTPER[t] + p.scale2
+            println("t == 60; computing UTILITY: $utility")
+        end
     end
 end

@@ -3,10 +3,12 @@ using Mimi
 using ExcelReaders
 
 include("../src/dice2013.jl")
+using dice2013
 
 @testset "DICE2013" begin
 
-m = getdiceexcel();
+# m = getdiceexcel();
+m = dice2013.DICE
 run(m)
 
 f=openxl(joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm"))

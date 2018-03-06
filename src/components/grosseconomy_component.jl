@@ -1,6 +1,5 @@
 using Mimi
 
-
 @defcomp grosseconomy begin
     K       = Variable(index=[time])    #Capital stock (trillions 2005 US dollars)
     YGROSS  = Variable(index=[time])    #Gross world product GROSS of abatement and damages (trillions 2005 USD per year)
@@ -12,23 +11,19 @@ using Mimi
     gama    = Parameter()               #Capital elasticity in production function
     k0      = Parameter()               #Initial capital value (trill 2005 USD)
 
-end
-
-
-function run_timestep(state::grosseconomy, t::Int)
-    v = state.Variables
-    p = state.Parameters
-
-    #Define function for K
-    if t==1
+    function init(p, v, d)
+        t = 1
         v.K[t] = p.k0
-    else
-        v.K[t] = (1 - p.dk)^5 * v.K[t-1] + 5 * p.I[t-1]
+    end
+        
+    function run(p, v, d, t)
+        # Define function for K
+        if t > 1
+            v.K[t] = (1 - p.dk)^5 * v.K[t-1] + 5 * p.I[t-1]
+        end
+
+        # Define function for YGROSS
+        v.YGROSS[t] = (p.al[t] * (p.l[t]/1000)^(1-p.gama)) * (v.K[t]^p.gama)
     end
 
-    #Define function for YGROSS
-    v.YGROSS[t] = (p.al[t] * (p.l[t]/1000)^(1-p.gama)) * (v.K[t]^p.gama)
-
 end
-
-

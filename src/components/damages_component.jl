@@ -12,22 +12,18 @@ using Mimi
     a3      = Parameter()               #Damage exponent
     damadj  = Parameter()               #Adjustment exponent in damage function
     usedamadj::Bool = Parameter()       # Only the Excel version uses the damadj parameter
-end
 
+    function run(p, v, d, t)
+        # Define function for DAMFRAC
+        v.DAMFRAC[t] = p.a1 * p.TATM[t] + p.a2 * p.TATM[t] ^ p.a3
 
-function run_timestep(state::damages, t::Int)
-    v = state.Variables
-    p = state.Parameters
-
-    #Define function for DAMFRAC
-    v.DAMFRAC[t] = p.a1 * p.TATM[t] + p.a2 * p.TATM[t] ^ p.a3
-
-    #Define function for DAMAGES
-    if p.usedamadj
-        # Excel version
-        v.DAMAGES[t] = p.YGROSS[t] * v.DAMFRAC[t] / (1 + v.DAMFRAC[t] ^ p.damadj)
-    else
-        # GAMS Version
-        v.DAMAGES[t] = p.YGROSS[t] * v.DAMFRAC[t]
+        # Define function for DAMAGES
+        if p.usedamadj
+            # Excel version
+            v.DAMAGES[t] = p.YGROSS[t] * v.DAMFRAC[t] / (1 + v.DAMFRAC[t] ^ p.damadj)
+        else
+            # GAMS Version
+            v.DAMAGES[t] = p.YGROSS[t] * v.DAMFRAC[t]
+        end
     end
 end

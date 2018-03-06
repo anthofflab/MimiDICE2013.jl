@@ -8,13 +8,8 @@ using Mimi
     eqmat     = Parameter()              #Equilibrium concentration of CO2 in atmosphere (GTC)
     fco22x    = Parameter()              #Forcings of equilibrium CO2 doubling (Wm-2)
 
-end
-
-function run_timestep(state::radiativeforcing, t::Int)
-    v = state.Variables
-    p = state.Parameters
-
-    #Define function for FORC
-    v.FORC[t] = p.fco22x * (log((p.MAT[t] / p.eqmat)) / log(2)) + p.forcoth[t]
-
+    function run(p, v, d, t)
+        #Define function for FORC
+        v.FORC[t] = p.fco22x * (log((p.MAT[t] / p.eqmat)) / log(2)) + p.forcoth[t]
+    end
 end

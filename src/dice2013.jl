@@ -1,3 +1,5 @@
+module dice2013
+
 using Mimi
 using ExcelReaders
 
@@ -12,124 +14,103 @@ include("components/damages_component.jl")
 include("components/neteconomy_component.jl")
 include("components/welfare_component.jl")
 
-function constructdice(p)
-    m = Model()
+export getparams
 
-    setindex(m, :time, collect(2010:5:2305))
+@defmodel DICE begin
 
-    addcomponent(m, grosseconomy)
-    addcomponent(m, emissions)
-    addcomponent(m, co2cycle)
-    addcomponent(m, radiativeforcing)
-    addcomponent(m, climatedynamics)
-    addcomponent(m, damages)
-    addcomponent(m, neteconomy)
-    addcomponent(m, welfare)
+    datafile = joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm")
+    p = getdice2013excelparameters(datafile)
 
+    index[time] = 2010:5:2305
 
-    #GROSS ECONOMY COMPONENT
-    setparameter(m, :grosseconomy, :al, p[:al])
-    setparameter(m, :grosseconomy, :l, p[:l])
-    setparameter(m, :grosseconomy, :gama, p[:gama])
-    setparameter(m, :grosseconomy, :dk, p[:dk])
-    setparameter(m, :grosseconomy, :k0, p[:k0])
+    component(grosseconomy)
+    component(emissions)
+    component(co2cycle)
+    component(radiativeforcing)
+    component(climatedynamics)
+    component(damages)
+    component(neteconomy)
+    component(welfare)
 
-    connectparameter(m, :grosseconomy, :I, :neteconomy, :I)
+    # GROSS ECONOMY COMPONENT
+    grosseconomy.al   = p[:al]
+    grosseconomy.l    = p[:l]
+    grosseconomy.gama = p[:gama]
+    grosseconomy.dk   = p[:dk]
+    grosseconomy.k0   = p[:k0]
 
+    neteconomy.I[t-1] => grosseconomy.I
 
-    #EMISSIONS COMPONENT
-    setparameter(m, :emissions, :sigma, p[:sigma])
-    setparameter(m, :emissions, :MIU, p[:MIU])
-    setparameter(m, :emissions, :etree, p[:etree])
-    setparameter(m, :emissions, :cca0, p[:cca0])
+    # EMISSIONS COMPONENT
+    emissions.sigma = p[:sigma]
+    emissions.MIU   = p[:MIU]
+    emissions.etree = p[:etree]
+    emissions.cca0  = p[:cca0]
 
-    connectparameter(m, :emissions, :YGROSS, :grosseconomy, :YGROSS)
+    grosseconomy.YGROSS => emissions.YGROSS
 
+    # CO2 CYCLE COMPONENT
+    co2cycle.mat0 = p[:mat0]
+    co2cycle.mu0  = p[:mu0]
+    co2cycle.ml0  = p[:ml0]
+    co2cycle.b12  = p[:b12]
+    co2cycle.b23  = p[:b23]
+    co2cycle.b11  = p[:b11]
+    co2cycle.b21  = p[:b21]
+    co2cycle.b22  = p[:b22]
+    co2cycle.b32  = p[:b32]
+    co2cycle.b33  = p[:b33]
 
-    #CO2 CYCLE COMPONENT
-    setparameter(m, :co2cycle, :mat0, p[:mat0])
-    setparameter(m, :co2cycle, :mu0, p[:mu0])
-    setparameter(m, :co2cycle, :ml0, p[:ml0])
-    setparameter(m, :co2cycle, :b12, p[:b12])
-    setparameter(m, :co2cycle, :b23, p[:b23])
-    setparameter(m, :co2cycle, :b11, p[:b11])
-    setparameter(m, :co2cycle, :b21, p[:b21])
-    setparameter(m, :co2cycle, :b22, p[:b22])
-    setparameter(m, :co2cycle, :b32, p[:b32])
-    setparameter(m, :co2cycle, :b33, p[:b33])
+    emissions.E => co2cycle.E
 
-    connectparameter(m, :co2cycle, :E, :emissions, :E)
+    # RADIATIVE FORCING COMPONENT
+    radiativeforcing.forcoth = p[:forcoth]
+    radiativeforcing.fco22x  = p[:fco22x]
+    radiativeforcing.eqmat   = p[:eqmat]
 
+    co2cycle.MAT => radiativeforcing.MAT
 
-    #RADIATIVE FORCING COMPONENT
-    setparameter(m, :radiativeforcing, :forcoth, p[:forcoth])
-    setparameter(m, :radiativeforcing, :fco22x, p[:fco22x])
-    setparameter(m, :radiativeforcing, :eqmat, p[:eqmat])
+    # CLIMATE DYNAMICS COMPONENT
+    climatedynamics.fco22x  = p[:fco22x]
+    climatedynamics.t2xco2  = p[:t2xco2]
+    climatedynamics.tatm0   = p[:tatm0]
+    climatedynamics.tocean0 = p[:tocean0]
+    climatedynamics.c1 = p[:c1]
+    climatedynamics.c3 = p[:c3]
+    climatedynamics.c4 = p[:c4]
 
-    connectparameter(m, :radiativeforcing, :MAT, :co2cycle, :MAT)
+    radiativeforcing.FORC => climatedynamics.FORC
 
+    # DAMAGES COMPONENT
+    damages.a1 = p[:a1]
+    damages.a2 = p[:a2]
+    damages.a3 = p[:a3]
+    damages.damadj    = p[:damadj]
+    damages.usedamadj = p[:usedamadj]
 
-    #CLIMATE DYNAMICS COMPONENT
-    setparameter(m, :climatedynamics, :fco22x, p[:fco22x])
-    setparameter(m, :climatedynamics, :t2xco2, p[:t2xco2])
-    setparameter(m, :climatedynamics, :tatm0, p[:tatm0])
-    setparameter(m, :climatedynamics, :tocean0, p[:tocean0])
-    setparameter(m, :climatedynamics, :c1, p[:c1])
-    setparameter(m, :climatedynamics, :c3, p[:c3])
-    setparameter(m, :climatedynamics, :c4, p[:c4])
+    climatedynamics.TATM => damages.TATM
+    grosseconomy.YGROSS  => damages.YGROSS
 
-    connectparameter(m, :climatedynamics, :FORC, :radiativeforcing, :FORC)
+    # NET ECONOMY COMPONENT
+    neteconomy.cost1 = p[:cost1]
+    neteconomy.MIU = p[:MIU]
+    neteconomy.expcost2 = p[:expcost2]
+    neteconomy.partfract = p[:partfract]
+    neteconomy.pbacktime = p[:pbacktime]
+    neteconomy.S = p[:S]
+    neteconomy.l = p[:l]
 
+    grosseconomy.YGROSS => neteconomy.YGROSS
+    damages.DAMAGES => neteconomy.DAMAGES
 
-    #DAMAGES COMPONENT
-    setparameter(m, :damages, :a1, p[:a1])
-    setparameter(m, :damages, :a2, p[:a2])
-    setparameter(m, :damages, :a3, p[:a3])
-    setparameter(m, :damages, :damadj, p[:damadj])
-    setparameter(m, :damages, :usedamadj, p[:usedamadj])
+    # WELFARE COMPONENT
+    welfare.l = p[:l]
+    welfare.elasmu = p[:elasmu]
+    welfare.rr = p[:rr]
+    welfare.scale1 = p[:scale1]
+    welfare.scale2 = p[:scale2]
 
-    connectparameter(m, :damages, :TATM, :climatedynamics, :TATM)
-    connectparameter(m, :damages, :YGROSS, :grosseconomy, :YGROSS)
-
-
-    #NET ECONOMY COMPONENT
-    setparameter(m, :neteconomy, :cost1, p[:cost1])
-    setparameter(m, :neteconomy, :MIU, p[:MIU])
-    setparameter(m, :neteconomy, :expcost2, p[:expcost2])
-    setparameter(m, :neteconomy, :partfract, p[:partfract])
-    setparameter(m, :neteconomy, :pbacktime, p[:pbacktime])
-    setparameter(m, :neteconomy, :S, p[:S])
-    setparameter(m, :neteconomy, :l, p[:l])
-
-    connectparameter(m, :neteconomy, :YGROSS, :grosseconomy, :YGROSS)
-    connectparameter(m, :neteconomy, :DAMAGES, :damages, :DAMAGES)
-
-
-    #WELFARE COMPONENT
-    setparameter(m, :welfare, :l, p[:l])
-    setparameter(m, :welfare, :elasmu, p[:elasmu])
-    setparameter(m, :welfare, :rr, p[:rr])
-    setparameter(m, :welfare, :scale1, p[:scale1])
-    setparameter(m, :welfare, :scale2, p[:scale2])
-
-    connectparameter(m, :welfare, :CPC, :neteconomy, :CPC)
-
-    return m
+    neteconomy.CPC => welfare.CPC
 end
 
-
-function getdiceexcel(;datafile = joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm"))
-    params = getdice2013excelparameters(datafile)
-
-    m=constructdice(params)
-
-    return m
-end
-
-function getdicegams(;datafile = joinpath(dirname(@__FILE__), "..", "Data", "DICE2013_IAMF_Parameters.xlsx"))
-    params = getdice2013gamsparameters(datafile)
-
-    m=constructdice(params)
-
-    return m
-end
+end # module
