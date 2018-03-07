@@ -3,6 +3,7 @@ module dice2013
 using Mimi
 using ExcelReaders
 
+include("helpers.jl")
 include("parameters.jl")
 
 include("components/grosseconomy_component.jl")

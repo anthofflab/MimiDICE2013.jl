@@ -31,7 +31,6 @@ using Mimi
             v.UTILITY = 5 * p.scale1 * v.CUMCEMUTOTPER[t] + p.scale2
 
             utility = 5 * p.scale1 * v.CUMCEMUTOTPER[t] + p.scale2
-            println("t == 60; computing UTILITY: $utility")
         end
     end
 end

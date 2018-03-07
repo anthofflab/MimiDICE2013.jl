@@ -1,5 +1,4 @@
 using ExcelReaders
-include("helpers.jl")
 
 function getdice2013excelparameters(filename)
     p = Dict{Symbol,Any}()
