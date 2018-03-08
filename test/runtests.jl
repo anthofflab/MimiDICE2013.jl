@@ -1,5 +1,4 @@
 using Base.Test
-using Mimi
 using ExcelReaders
 
 include("../src/dice2013.jl")
@@ -11,7 +10,7 @@ using dice2013
 m = dice2013.DICE
 run(m)
 
-f=openxl(joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm"))
+f = openxl(joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm"))
 
 #Test Precision
 Precision = 1.0e-11

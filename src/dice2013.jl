@@ -5,7 +5,6 @@ using ExcelReaders
 
 include("helpers.jl")
 include("parameters.jl")
-
 include("components/grosseconomy_component.jl")
 include("components/emissions_component.jl")
 include("components/co2cycle_component.jl")
@@ -15,12 +14,15 @@ include("components/damages_component.jl")
 include("components/neteconomy_component.jl")
 include("components/welfare_component.jl")
 
-export getparams
+export getparams, DICE
+
+datafile = joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm")
 
 @defmodel DICE begin
-
-    datafile = joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm")
     p = getdice2013excelparameters(datafile)
+
+    # datafile = joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm")
+    # p = getdice2013excelparameters(datafile)
 
     index[time] = 2010:5:2305
 

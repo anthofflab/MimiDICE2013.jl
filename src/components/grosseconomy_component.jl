@@ -25,5 +25,4 @@ using Mimi
         # Define function for YGROSS
         v.YGROSS[t] = (p.al[t] * (p.l[t]/1000)^(1-p.gama)) * (v.K[t]^p.gama)
     end
-
 end

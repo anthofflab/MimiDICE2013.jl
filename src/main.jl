@@ -1,11 +1,10 @@
 using Mimi
-
 include("dice2013.jl")
 using dice2013
 
-m = dice2013.DICE
-
-run(m)
+run(DICE)
 
 # Check model results
-getdataframe(m, :neteconomy, :DAMAGES)
+#getdataframe(DICE, :neteconomy, :DAMAGES)
+
+explore(DICE)
