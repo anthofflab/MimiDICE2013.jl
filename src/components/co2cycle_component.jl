@@ -26,7 +26,7 @@ using Mimi
         v.ML[t]  = p.ml0
     end
 
-    function run(p, v, d, t)
+    function run_timestep(p, v, d, t)
         if t > 1
             # Define function for MAT
             v.MAT[t] = v.MAT[t-1] * p.b11 + v.MU[t-1] * p.b21 + (p.E[t-1]*(5/3.666))

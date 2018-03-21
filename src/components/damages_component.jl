@@ -13,7 +13,7 @@ using Mimi
     damadj  = Parameter()               #Adjustment exponent in damage function
     usedamadj::Bool = Parameter()       # Only the Excel version uses the damadj parameter
 
-    function run(p, v, d, t)
+    function run_timestep(p, v, d, t)
         # Define function for DAMFRAC
         v.DAMFRAC[t] = p.a1 * p.TATM[t] + p.a2 * p.TATM[t] ^ p.a3
 

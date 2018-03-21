@@ -22,7 +22,7 @@ using Mimi
     YGROSS      = Parameter(index=[time])   #Gross world product GROSS of abatement and damages (trillions 2005 USD per year)
     expcost2    = Parameter()               #Exponent of control cost function
 
-    function run(p, v, d, t)
+    function run_timestep(p, v, d, t)
         #Define function for YNET
         v.YNET[t] = p.YGROSS[t] - p.DAMAGES[t]
 

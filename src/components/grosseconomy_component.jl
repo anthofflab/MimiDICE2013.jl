@@ -16,7 +16,7 @@ using Mimi
         v.K[t] = p.k0
     end
         
-    function run(p, v, d, t)
+    function run_timestep(p, v, d, t)
         # Define function for K
         if t > 1
             v.K[t] = (1 - p.dk)^5 * v.K[t-1] + 5 * p.I[t-1]

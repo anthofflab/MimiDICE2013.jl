@@ -16,7 +16,7 @@ using Mimi
     function init(p, v, d)
     end
 
-    function run(p, v, d, t)
+    function run_timestep(p, v, d, t)
         # Define function for PERIODU
         v.PERIODU[t] = (p.CPC[t] ^ (1 - p.elasmu) - 1) / (1 - p.elasmu) - 1
 

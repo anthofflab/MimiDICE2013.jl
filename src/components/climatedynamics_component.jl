@@ -22,7 +22,7 @@ using Mimi
         v.TOCEAN[t] = p.tocean0
     end
 
-    function run(p, v, d, t)
+    function run_timestep(p, v, d, t)
         if t > 1
             # values from prior timestep
             tatm = v.TATM[t - 1]

@@ -16,7 +16,7 @@ using Mimi
         v.CCA[t] = p.cca0
     end
 
-    function run(p, v, d, t)
+    function run_timestep(p, v, d, t)
         # Define function for EIND
         v.EIND[t] = p.sigma[t] * p.YGROSS[t] * (1-p.MIU[t])
 
