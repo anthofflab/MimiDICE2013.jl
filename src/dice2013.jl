@@ -44,12 +44,15 @@ set_parameter!(DICE, :grosseconomy, :k0, p[:k0])
 
 # Note: offset=1 => dependence is on on prior timestep, i.e., not a cycle
 connect_parameter(DICE, :grosseconomy, :I, :neteconomy, :I, offset=1)
+
+# EMISSIONS COMPONENT
 set_parameter!(DICE, :emissions, :sigma, p[:sigma])
 set_parameter!(DICE, :emissions, :MIU, p[:MIU])
 set_parameter!(DICE, :emissions, :etree, p[:etree])
 set_parameter!(DICE, :emissions, :cca0, p[:cca0])
 connect_parameter(DICE, :emissions, :YGROSS, :grosseconomy, :YGROSS, offset=0)
 
+# CO2 CYCLE COMPONENT
 set_parameter!(DICE, :co2cycle, :mat0, p[:mat0])
 set_parameter!(DICE, :co2cycle, :mu0, p[:mu0])
 set_parameter!(DICE, :co2cycle, :ml0, p[:ml0])
@@ -62,11 +65,13 @@ set_parameter!(DICE, :co2cycle, :b32, p[:b32])
 set_parameter!(DICE, :co2cycle, :b33, p[:b33])
 connect_parameter(DICE, :co2cycle, :E, :emissions, :E, offset=0)
 
+# RADIATIVE FORCING COMPONENT
 set_parameter!(DICE, :radiativeforcing, :forcoth, p[:forcoth])
 set_parameter!(DICE, :radiativeforcing, :fco22x, p[:fco22x])
 set_parameter!(DICE, :radiativeforcing, :eqmat, p[:eqmat])
 connect_parameter(DICE, :radiativeforcing, :MAT, :co2cycle, :MAT, offset=0)
 
+# CLIMATE DYNAMICS COMPONENT
 set_parameter!(DICE, :climatedynamics, :fco22x, p[:fco22x])
 set_parameter!(DICE, :climatedynamics, :t2xco2, p[:t2xco2])
 set_parameter!(DICE, :climatedynamics, :tatm0, p[:tatm0])
@@ -76,6 +81,7 @@ set_parameter!(DICE, :climatedynamics, :c3, p[:c3])
 set_parameter!(DICE, :climatedynamics, :c4, p[:c4])
 connect_parameter(DICE, :climatedynamics, :FORC, :radiativeforcing, :FORC, offset=0)
 
+# DAMAGES COMPONENT
 set_parameter!(DICE, :damages, :a1, p[:a1])
 set_parameter!(DICE, :damages, :a2, p[:a2])
 set_parameter!(DICE, :damages, :a3, p[:a3])
@@ -84,6 +90,7 @@ set_parameter!(DICE, :damages, :usedamadj, p[:usedamadj])
 connect_parameter(DICE, :damages, :TATM, :climatedynamics, :TATM, offset=0)
 connect_parameter(DICE, :damages, :YGROSS, :grosseconomy, :YGROSS, offset=0)
 
+# NET ECONOMY COMPONENT
 set_parameter!(DICE, :neteconomy, :cost1, p[:cost1])
 set_parameter!(DICE, :neteconomy, :MIU, p[:MIU])
 set_parameter!(DICE, :neteconomy, :expcost2, p[:expcost2])
@@ -94,6 +101,7 @@ set_parameter!(DICE, :neteconomy, :l, p[:l])
 connect_parameter(DICE, :neteconomy, :YGROSS, :grosseconomy, :YGROSS, offset=0)
 connect_parameter(DICE, :neteconomy, :DAMAGES, :damages, :DAMAGES, offset=0)
 
+# WELFARE COMPONENT
 set_parameter!(DICE, :welfare, :l, p[:l])
 set_parameter!(DICE, :welfare, :elasmu, p[:elasmu])
 set_parameter!(DICE, :welfare, :rr, p[:rr])
