@@ -25,25 +25,25 @@ using Mimi
     function run_timestep(p, v, d, t)
         #Define function for YNET
         v.YNET[t] = p.YGROSS[t] - p.DAMAGES[t]
-
+    
         #Define function for ABATECOST
         v.ABATECOST[t] = p.YGROSS[t] * p.cost1[t] * (p.MIU[t]^p.expcost2) * (p.partfract[t]^(1 - p.expcost2))
-
+    
         #Define function for MCABATE (equation from GAMS version)
         v.MCABATE[t] = p.pbacktime[t] * p.MIU[t]^(p.expcost2 - 1)
-
+    
         #Define function for Y
         v.Y[t] = v.YNET[t] - v.ABATECOST[t]
-
+    
         #Define function for I
         v.I[t] = p.S[t] * v.Y[t]
-
+    
         #Define function for C
         v.C[t] = v.Y[t] - v.I[t]
-
+    
         #Define function for CPC
         v.CPC[t] = 1000 * v.C[t] / p.l[t]
-
+    
         #Define function for CPRICE (equation from GAMS version of DICE2013)
         v.CPRICE[t] = p.pbacktime[t] * (p.MIU[t] / p.partfract[t])^(p.expcost2 - 1)
     end

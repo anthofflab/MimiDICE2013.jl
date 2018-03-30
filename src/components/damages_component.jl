@@ -14,10 +14,10 @@ using Mimi
     usedamadj::Bool = Parameter()       # Only the Excel version uses the damadj parameter
 
     function run_timestep(p, v, d, t)
-        # Define function for DAMFRAC
+        #Define function for DAMFRAC
         v.DAMFRAC[t] = p.a1 * p.TATM[t] + p.a2 * p.TATM[t] ^ p.a3
-
-        # Define function for DAMAGES
+    
+        #Define function for DAMAGES
         if p.usedamadj
             # Excel version
             v.DAMAGES[t] = p.YGROSS[t] * v.DAMFRAC[t] / (1 + v.DAMFRAC[t] ^ p.damadj)

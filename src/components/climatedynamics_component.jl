@@ -15,24 +15,19 @@ using Mimi
     c3 = Parameter()                    # Coefficient of heat loss from atmosphere to oceans
     c4 = Parameter()                    # Coefficient of heat gain by deep oceans.
 
-
-    function init(p, v, d)
-        t = 1
-        v.TATM[t] = p.tatm0
-        v.TOCEAN[t] = p.tocean0
-    end
-
     function run_timestep(p, v, d, t)
-        if t > 1
-            # values from prior timestep
-            tatm = v.TATM[t - 1]
-            tocean = v.TOCEAN[t - 1]
-            
-            # Define function for TATM
-            v.TATM[t] = tatm + p.c1 * ((p.FORC[t] - (p.fco22x / p.t2xco2) * tatm) - (p.c3 * (tatm - tocean)))
+        #Define function for TATM
+        if t==1
+            v.TATM[t] = p.tatm0
+        else
+            v.TATM[t] = v.TATM[t-1] + p.c1 * ((p.FORC[t] - (p.fco22x/p.t2xco2) * v.TATM[t-1]) - (p.c3 * (v.TATM[t-1] - v.TOCEAN[t-1])))
+        end
 
-            # Define function for TOCEAN
-            v.TOCEAN[t] = tocean + p.c4 * (tatm - tocean)
+        #Define function for TOCEAN
+        if t==1
+            v.TOCEAN[t] = p.tocean0
+        else
+            v.TOCEAN[t] = v.TOCEAN[t-1] + p.c4 * (v.TATM[t-1] - v.TOCEAN[t-1])
         end
     end
 end

@@ -13,9 +13,6 @@ using Mimi
     scale1          = Parameter()               #Multiplicative scaling coefficient
     scale2          = Parameter()               #Additive scaling coefficient
 
-    function init(p, v, d)
-    end
-
     function run_timestep(p, v, d, t)
         # Define function for PERIODU
         v.PERIODU[t] = (p.CPC[t] ^ (1 - p.elasmu) - 1) / (1 - p.elasmu) - 1
