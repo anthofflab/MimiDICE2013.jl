@@ -14,7 +14,7 @@ include("components/damages_component.jl")
 include("components/neteconomy_component.jl")
 include("components/welfare_component.jl")
 
-export getparams, DICE
+export DICE
 
 const global datafile = joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm")
 

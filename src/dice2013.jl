@@ -14,7 +14,7 @@ include("components/damages_component.jl")
 include("components/neteconomy_component.jl")
 include("components/welfare_component.jl")
 
-export getparams, DICE
+export DICE
 
 #
 # N.B. See dice2013-defmodel.jl for the @defmodel version of the following
