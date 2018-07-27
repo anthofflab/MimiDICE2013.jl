@@ -19,7 +19,7 @@ using Mimi
         v.E[t] = v.EIND[t] + p.etree[t]
     
         #Define function for CCA
-        if t==1
+        if is_first(t)
             v.CCA[t] = p.cca0
         else
             v.CCA[t] = v.CCA[t-1] + v.EIND[t-1] * 5/3.666
