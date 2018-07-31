@@ -109,6 +109,4 @@ set_param!(DICE, :welfare, :scale1, p[:scale1])
 set_param!(DICE, :welfare, :scale2, p[:scale2])
 connect_param!(DICE, :welfare, :CPC, :neteconomy, :CPC, offset=0)
 
-add_connector_comps(DICE)
-
 end # module
