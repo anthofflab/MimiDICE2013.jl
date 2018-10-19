@@ -2,9 +2,10 @@ using Mimi
 using Distributions
 
 include("dice2013.jl")
-using dice2013
+using Dice2013
 
-m = dice2013.DICE
+m = constructdice()
+run(m)
 
 mcs = @defmcs begin
     # The parameters of the log‐normal distribution fit to Olsen et al. 

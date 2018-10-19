@@ -1,8 +1,9 @@
 using Mimi
 
 include("dice2013.jl")
-using dice2013
+using Dice2013
 
+DICE = getdiceexcel()
 run(DICE)
 
 # Check model results
