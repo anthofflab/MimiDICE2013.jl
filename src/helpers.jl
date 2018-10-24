@@ -23,18 +23,21 @@ end
 function getparams(f, range::String, parameters::Symbol, sheet::String, T)
 
     if parameters == :single
-        vals= Float64
-            data=readxl(f,"$sheet\!$range")
-            vals=data[1]
-        return vals
+        data = readxl(f, "$sheet\!$range")
+        vals = Float64(data[1])
 
     elseif parameters == :all
-        vals= Array{Float64}(T)
+        data = readxl(f, "$sheet\!$range")
+        s = size(data)
 
-            data=readxl(f,"$sheet\!$range")
-                for i=1:T
-                vals[i] = data[i]
-                end
-            end
-        return vals
+        if length(s) == 2 && s[1] == 1
+            # convert 2D row vector to 1D col vector
+            data = vec(data)
+        end
+
+        dims = length(size(data))
+        vals = Array{Float64, dims}(data)
     end
+
+    return vals
+end

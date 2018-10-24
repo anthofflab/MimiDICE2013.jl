@@ -1,15 +1,23 @@
 using Base.Test
-using Mimi
 using ExcelReaders
+using DataFrames
 
 include("../src/dice2013.jl")
+using Dice2013
 
 @testset "DICE2013" begin
 
+#------------------------------------------------------------------------------
+#   1. Run tests on the whole model
+#------------------------------------------------------------------------------
+
+@testset "DICE2013-model" begin
+
+# m = getdiceexcel();
 m = getdiceexcel();
 run(m)
 
-f=openxl(joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm"))
+f = openxl(joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm"))
 
 #Test Precision
 Precision = 1.0e-11
@@ -52,4 +60,50 @@ True_FORC = getparams(f, "B100:BI100", :all, "Base", T);
 True_UTILITY = getparams(f, "B129:B129", :single, "Base", T);
 @test maximum(abs, m[:welfare, :UTILITY] .- True_UTILITY) ≈ 0. atol = Precision
 
-end
+end #DICE2013-model testset
+
+
+#------------------------------------------------------------------------------
+#   2. Run tests to make sure integration version (Mimi v0.5.0)
+#   values match Mimi 0.4.0 values
+#------------------------------------------------------------------------------
+
+@testset "DICE2013-integration" begin
+
+Precision = 1.0e-11
+nullvalue = -999.999
+
+m = getdiceexcel();
+run(m)
+
+for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
+    
+    #load data for comparison
+    filepath = joinpath(@__DIR__, "../data/validation_data_v040/$c-$v.csv")        
+    results = m[c, v]
+
+    if typeof(results) <: Number
+        validation_results = DataFrames.readtable(filepath)[1,1]
+        
+    else
+        validation_results = convert(Array, DataFrames.readtable(filepath))
+
+        #match dimensions
+        if size(validation_results,1) == 1
+            validation_results = validation_results'
+        end
+
+        #remove NaNs
+        results[isnan.(results)] = nullvalue
+        validation_results[isnan.(validation_results)] = nullvalue
+        
+    end
+    @test results ≈ validation_results atol = Precision
+    
+end #for loop
+
+end #DICE2013-integration testset
+
+end #DICE2013 testset
+
+nothing

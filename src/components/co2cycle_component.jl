@@ -1,6 +1,5 @@
 using Mimi
 
-
 @defcomp co2cycle begin
     MAT     = Variable(index=[time])    #Carbon concentration increase in atmosphere (GtC from 1750)
     ML      = Variable(index=[time])    #Carbon concentration increase in lower oceans (GtC from 1750)
@@ -20,32 +19,26 @@ using Mimi
     b32     = Parameter()               #Carbon cycle transition matrix deep ocean to shallow ocean
     b33     = Parameter()               #Carbon cycle transition matrix deep ocean to deep oceans
 
- end
+    function run_timestep(p, v, d, t)
+        #Define function for MAT
+        if is_first(t)
+            v.MAT[t] = p.mat0
+        else
+            v.MAT[t] = v.MAT[t-1] * p.b11 + v.MU[t-1] * p.b21 + (p.E[t-1]*(5/3.666))
+        end
 
+        #Define function for MU
+        if is_first(t)
+            v.MU[t] = p.mu0
+        else
+            v.MU[t] = v.MAT[t-1] * p.b12 + v.MU[t-1] * p.b22 + v.ML[t-1] * p.b32
+        end
 
-function run_timestep(state::co2cycle, t::Int)
-    v = state.Variables
-    p = state.Parameters
-
-    #Define function for MAT
-    if t==1
-        v.MAT[t] = p.mat0
-    else
-        v.MAT[t] = v.MAT[t-1] * p.b11 + v.MU[t-1] * p.b21 + (p.E[t-1]*(5/3.666))
+        #Define function for ML
+        if is_first(t)
+            v.ML[t] = p.ml0
+        else
+            v.ML[t] = v.ML[t-1] * p.b33 + v.MU[t-1] * p.b23
+        end
     end
-
-    #Define function for MU
-    if t==1
-        v.MU[t] = p.mu0
-    else
-        v.MU[t] = v.MAT[t-1] * p.b12 + v.MU[t-1] * p.b22 + v.ML[t-1] * p.b32
-    end
-
-    #Define function for ML
-    if t==1
-        v.ML[t] = p.ml0
-    else
-        v.ML[t] = v.ML[t-1] * p.b33 + v.MU[t-1] * p.b23
-    end
-
 end
