@@ -2,7 +2,7 @@ using Mimi
 using Distributions
 
 include("dice2013.jl")
-using Dice2013
+using .Dice2013
 
 m = constructdice()
 run(m)

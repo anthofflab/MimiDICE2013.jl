@@ -1,5 +1,5 @@
 include("dice2013.jl")
-using Dice2013
+using .Dice2013
 
 function getmarginal_dice_models(;emissionyear=2010)
 
