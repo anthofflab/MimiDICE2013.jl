@@ -1,9 +1,11 @@
-using Base.Test
+using Test
 using ExcelReaders
 using DataFrames
+using Mimi
+using CSV
 
 include("../src/dice2013.jl")
-using Dice2013
+using .Dice2013
 
 @testset "DICE2013" begin
 
@@ -13,7 +15,6 @@ using Dice2013
 
 @testset "DICE2013-model" begin
 
-# m = getdiceexcel();
 m = getdiceexcel();
 run(m)
 
@@ -83,20 +84,21 @@ for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
     results = m[c, v]
 
     if typeof(results) <: Number
-        validation_results = DataFrames.readtable(filepath)[1,1]
+        validation_results = CSV.read(filepath)[1,1]
         
     else
-        validation_results = convert(Array, DataFrames.readtable(filepath))
+        validation_results = convert(Array, CSV.read(filepath))
 
+        #remove NaNs
+        results[ismissing.(results)] .= nullvalue
+        results[isnan.(results)] .= nullvalue
+        validation_results[isnan.(validation_results)] .= nullvalue
+  
         #match dimensions
         if size(validation_results,1) == 1
             validation_results = validation_results'
         end
 
-        #remove NaNs
-        results[isnan.(results)] = nullvalue
-        validation_results[isnan.(validation_results)] = nullvalue
-        
     end
     @test results ≈ validation_results atol = Precision
     

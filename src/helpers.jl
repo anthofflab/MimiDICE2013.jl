@@ -1,6 +1,6 @@
 #Timestep conversion function
 function getindexfromyear_dice_2013(year)
-    const baseyear = 2010
+    baseyear = 2010
 
     if rem(year - baseyear, 5) != 0
         error("Invalid year")
@@ -23,11 +23,11 @@ end
 function getparams(f, range::String, parameters::Symbol, sheet::String, T)
 
     if parameters == :single
-        data = readxl(f, "$sheet\!$range")
+        data = readxl(f, "$(sheet)!$(range)")
         vals = Float64(data[1])
 
     elseif parameters == :all
-        data = readxl(f, "$sheet\!$range")
+        data = readxl(f, "$(sheet)!$(range)")
         s = size(data)
 
         if length(s) == 2 && s[1] == 1
