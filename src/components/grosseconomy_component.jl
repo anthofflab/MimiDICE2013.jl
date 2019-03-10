@@ -1,5 +1,3 @@
-using Mimi
-
 @defcomp grosseconomy begin
     K       = Variable(index=[time])    #Capital stock (trillions 2005 US dollars)
     YGROSS  = Variable(index=[time])    #Gross world product GROSS of abatement and damages (trillions 2005 USD per year)

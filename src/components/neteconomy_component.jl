@@ -1,6 +1,3 @@
-using Mimi
-
-
 @defcomp neteconomy begin
 
     ABATECOST   = Variable(index=[time])    #Cost of emissions reductions  (trillions 2005 USD per year)

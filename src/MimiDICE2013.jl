@@ -6,6 +6,8 @@ using ExcelReaders
 include("helpers.jl")
 include("parameters.jl")
 
+include("marginaldamage.jl")
+
 include("components/grosseconomy_component.jl")
 include("components/emissions_component.jl")
 include("components/co2cycle_component.jl")
@@ -15,7 +17,7 @@ include("components/damages_component.jl")
 include("components/neteconomy_component.jl")
 include("components/welfare_component.jl")
 
-export constructdice, getparams, getdiceexcel, getdicegames
+export constructdice, getdiceexcel, getdicegams, getmarginal_dice_models
 
 function constructdice(p)
 

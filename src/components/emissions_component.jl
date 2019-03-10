@@ -1,5 +1,3 @@
-using Mimi
-
 @defcomp emissions begin
     CCA     = Variable(index=[time])    #Cumulative indiustrial emissions
     E       = Variable(index=[time])    #Total CO2 emissions (GtCO2 per year)

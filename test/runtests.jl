@@ -2,18 +2,18 @@ using Test
 using ExcelReaders
 using DataFrames
 using Mimi
+using MimiDICE2013
 using CSVFiles
 
-include("../src/dice2013.jl")
-using .Dice2013
+using MimiDICE2013: getparams
 
-@testset "DICE2013" begin
+@testset "MimiDICE2013" begin
 
 #------------------------------------------------------------------------------
 #   1. Run tests on the whole model
 #------------------------------------------------------------------------------
 
-@testset "DICE2013-model" begin
+@testset "MimiDICE2013-model" begin
 
 m = getdiceexcel();
 run(m)
@@ -61,7 +61,7 @@ True_FORC = getparams(f, "B100:BI100", :all, "Base", T);
 True_UTILITY = getparams(f, "B129:B129", :single, "Base", T);
 @test maximum(abs, m[:welfare, :UTILITY] .- True_UTILITY) ≈ 0. atol = Precision
 
-end #DICE2013-model testset
+end #MimiDICE2013-model testset
 
 
 #------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ end #DICE2013-model testset
 #   values match Mimi 0.4.0 values
 #------------------------------------------------------------------------------
 
-@testset "DICE2013-integration" begin
+@testset "MimiDICE2013-integration" begin
 
 Precision = 1.0e-11
 nullvalue = -999.999
@@ -105,8 +105,8 @@ for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
     
 end #for loop
 
-end #DICE2013-integration testset
+end #MimiDICE2013-integration testset
 
-end #DICE2013 testset
+end #MimiDICE2013 testset
 
 nothing

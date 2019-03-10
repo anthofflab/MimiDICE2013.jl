@@ -1,5 +1,3 @@
-using Mimi
-
 @defcomp co2cycle begin
     MAT     = Variable(index=[time])    #Carbon concentration increase in atmosphere (GtC from 1750)
     ML      = Variable(index=[time])    #Carbon concentration increase in lower oceans (GtC from 1750)
