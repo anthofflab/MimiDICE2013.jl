@@ -1,4 +1,4 @@
-module Dice2013
+module MimiDICE2013
 
 using Mimi
 using ExcelReaders
@@ -107,7 +107,7 @@ function constructdice(p)
 
     return m
 
-end 
+end
 
 function getdiceexcel(;datafile = joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm"))
     params = getdice2013excelparameters(datafile)
