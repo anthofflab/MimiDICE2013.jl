@@ -17,7 +17,7 @@ include("components/damages_component.jl")
 include("components/neteconomy_component.jl")
 include("components/welfare_component.jl")
 
-export constructdice, getdiceexcel, getdicegams, getmarginal_dice_models
+export constructdice, getdiceexcel, getdicegams
 
 function constructdice(p)
 
