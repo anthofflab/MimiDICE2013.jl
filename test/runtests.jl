@@ -88,7 +88,7 @@ for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
         validation_results = df[1,1]
         
     else
-        validation_results = convert(Array, df)
+        validation_results = convert(Matrix, df)
 
         #remove NaNs and Missings
         results[ismissing.(results)] .= nullvalue
