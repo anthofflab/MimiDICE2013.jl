@@ -1,5 +1,3 @@
-using Mimi
-
 @defcomp radiativeforcing begin
     FORC      = Variable(index=[time])   #Increase in radiative forcing (watts per m2 from 1900)
 

@@ -1,5 +1,3 @@
-using Mimi
-
 @defcomp welfare begin
     CEMUTOTPER      = Variable(index=[time])    #Period utility
     CUMCEMUTOTPER   = Variable(index=[time])    #Cumulative period utility

@@ -1,6 +1,3 @@
-using Mimi
-
-
 @defcomp damages begin
     DAMAGES = Variable(index=[time])    #Damages (trillions 2005 USD per year)
     DAMFRAC = Variable(index=[time])    #Damages (fraction of gross output)

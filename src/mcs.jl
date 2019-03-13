@@ -1,13 +1,9 @@
-using Mimi
 using Distributions
-
-include("dice2013.jl")
-using .Dice2013
 
 m = constructdice()
 run(m)
 
-mcs = @defmcs begin
+mcs = @defsim begin
     # The parameters of the log‐normal distribution fit to Olsen et al. 
     # are μ = 1.10704 and σ = 0.264 (Gillingham et al. 2015)
     t2xco2 = LogNormal(1.10704, 0.264)
@@ -18,4 +14,5 @@ end
 generate_trials!(mcs, 10000, filename="/tmp/dice-2013/trialdata.csv")
 
 # Run trials 1:4, and save results to the indicated directory
-run_mcs(m, mcs, 10000, output_dir="/tmp/dice-2013")
+set_models!(mcs, m)
+run_sim(mcs, 10000, output_dir="/tmp/dice-2013")
