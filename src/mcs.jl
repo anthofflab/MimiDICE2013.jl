@@ -15,4 +15,4 @@ generate_trials!(mcs, 10000, filename="/tmp/dice-2013/trialdata.csv")
 
 # Run trials 1:4, and save results to the indicated directory
 set_models!(mcs, m)
-run_sim(mcs, 10000, output_dir="/tmp/dice-2013")
+run_sim(mcs, output_dir="/tmp/dice-2013")
