@@ -1,4 +1,4 @@
-using ExcelReaders
+using XLSX: readxlsx
 
 function getdice2013excelparameters(filename)
     p = Dict{Symbol,Any}()
@@ -6,7 +6,7 @@ function getdice2013excelparameters(filename)
     T = 60
 
     #Open RICE_2010 Excel File to Read Parameters
-    f = openxl(filename)
+    f = readxlsx(filename)
 
     p[:a1]          = getparams(f, "B25:B25", :single, "Base", 1)       #Damage coefficient on temperature
     p[:a2]          = getparams(f, "B26:B26", :single, "Base", 1)       #Damage quadratic term
@@ -61,7 +61,7 @@ function getdice2013gamsparameters(filename)
     T = 60
 
     #Open RICE_2010 Excel File to Read Parameters
-    f = openxl(filename)
+    f = readxlsx(filename)
     sheet = "DICE2013_Base"
 
     p[:a1]          = getparams(f, "B41:B41", :single, sheet, 1)       #Damage coefficient on temperature
