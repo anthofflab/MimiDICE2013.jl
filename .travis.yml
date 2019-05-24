@@ -11,5 +11,7 @@ branches:
   - master
   - /release-.*/
   - /v(\d+)\.(\d+)\.(\d+)/
+env:
+  - PYTHON=""  
 after_success:
   - julia -e 'using Pkg; cd(Pkg.dir("MimiDICE2013")); Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
