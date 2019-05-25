@@ -19,10 +19,12 @@ include("components/welfare_component.jl")
 
 export constructdice, getdiceexcel, getdicegams
 
+const model_years = 2010:5:2305
+
 function constructdice(p)
 
     m = Model()
-    set_dimension!(m, :time, 2010:5:2305)
+    set_dimension!(m, :time, model_years)
 
     add_comp!(m, grosseconomy, :grosseconomy)
     add_comp!(m, emissions, :emissions)
@@ -126,5 +128,8 @@ function getdicegams(;datafile = joinpath(dirname(@__FILE__), "..", "Data", "DIC
 
     return m
 end
+
+# get_model function for standard Mimi API: use the Excel version
+get_model = getdiceexcel
 
 end # module
