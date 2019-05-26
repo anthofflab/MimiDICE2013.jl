@@ -111,7 +111,7 @@ function constructdice(p)
 
 end
 
-function getdiceexcel(;datafile = joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm"))
+function getdiceexcel(;datafile = joinpath(dirname(@__FILE__), "..", "data", "DICE_2013_Excel.xlsm"))
     params = getdice2013excelparameters(datafile)
 
     m = constructdice(params)
@@ -119,7 +119,7 @@ function getdiceexcel(;datafile = joinpath(dirname(@__FILE__), "..", "Data", "DI
     return m
 end
 
-function getdicegams(;datafile = joinpath(dirname(@__FILE__), "..", "Data", "DICE2013_IAMF_Parameters.xlsx"))
+function getdicegams(;datafile = joinpath(dirname(@__FILE__), "..", "data", "DICE2013_IAMF_Parameters.xlsx"))
     params = getdice2013gamsparameters(datafile)
 
     m = constructdice(params)

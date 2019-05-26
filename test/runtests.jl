@@ -18,7 +18,7 @@ using MimiDICE2013: getparams
 m = getdiceexcel();
 run(m)
 
-f = openxl(joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm"))
+f = openxl(joinpath(dirname(@__FILE__), "..", "data", "DICE_2013_Excel.xlsm"))
 
 #Test Precision
 Precision = 1.0e-11
@@ -78,15 +78,15 @@ m = getdiceexcel();
 run(m)
 
 for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
-    
+
     #load data for comparison
-    filepath = joinpath(@__DIR__, "../data/validation_data_v040/$c-$v.csv")        
+    filepath = joinpath(@__DIR__, "../data/validation_data_v040/$c-$v.csv")
     results = m[c, v]
 
     df = load(filepath) |> DataFrame
     if typeof(results) <: Number
         validation_results = df[1,1]
-        
+
     else
         validation_results = convert(Matrix, df)
 
@@ -95,7 +95,7 @@ for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
         results[isnan.(results)] .= nullvalue
         validation_results[ismissing.(validation_results)] .= nullvalue
         validation_results[isnan.(validation_results)] .= nullvalue
-  
+
         #match dimensions
         if size(validation_results,1) == 1
             validation_results = validation_results'
@@ -103,7 +103,7 @@ for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
 
     end
     @test results ≈ validation_results atol = Precision
-    
+
 end #for loop
 
 end #MimiDICE2013-integration testset
