@@ -1,7 +1,7 @@
 using Mimi
 using MimiDICE2013
 
-DICE = getdiceexcel()
+DICE = MimiDICE2013.get_model()
 run(DICE)
 
 explore(DICE)
