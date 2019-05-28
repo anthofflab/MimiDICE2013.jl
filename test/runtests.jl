@@ -127,9 +127,9 @@ scc1 = MimiDICE2013.compute_scc(year=2020)
 scc2 = MimiDICE2013.compute_scc(year=2020, last_year=2200)
 @test scc2 < scc1
 
-# Test that it's larger with a smaller prtp
+# Test that it's smaller with a larger prtp
 scc3 = MimiDICE2013.compute_scc(year=2020, last_year=2200, prtp=0.02)
-@test scc3 > scc2
+@test scc3 < scc2
 
 # Test with a modified model 
 m = MimiDICE2013.get_model()
