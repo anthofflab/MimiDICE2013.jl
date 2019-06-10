@@ -11,8 +11,4 @@ mcs = @defsim begin
     save(damages.DAMAGES)
 end
 
-generate_trials!(mcs, 10000, filename="/tmp/dice-2013/trialdata.csv")
-
-# Run trials 1:4, and save results to the indicated directory
-set_models!(mcs, m)
-run_sim(mcs, output_dir="/tmp/dice-2013")
+run(mcs, m, 1000; trials_output_filename = "/tmp/dice-2013/trialdata.csv", results_output_dir="/tmp/dice-2013")
