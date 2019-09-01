@@ -9,7 +9,6 @@ ExcelReaders = "c04bee98-12a5-510c-87df-2a230cb6e075"
 [compat]
 Mimi = "0.9"
 ExcelReaders = "0.11"
-CSVFiles = "0.16.0"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
