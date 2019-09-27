@@ -71,7 +71,7 @@ end #MimiDICE2013-model testset
 
 @testset "MimiDICE2013-integration" begin
 
-Precision = 1.0e-11
+Precision = 1.0e-10
 nullvalue = -999.999
 
 m = MimiDICE2013.get_model();
