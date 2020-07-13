@@ -22,7 +22,7 @@
         v.CUMCEMUTOTPER[t] = v.CEMUTOTPER[t] + (!is_first(t) ? v.CUMCEMUTOTPER[t-1] : 0)
 
         # Define function for UTILITY
-        if t.t == 60
+        if t == TimestepIndex(60)
             v.UTILITY = 5 * p.scale1 * v.CUMCEMUTOTPER[t] + p.scale2
 
             utility = 5 * p.scale1 * v.CUMCEMUTOTPER[t] + p.scale2

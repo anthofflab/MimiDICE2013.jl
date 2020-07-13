@@ -8,7 +8,7 @@
     a2      = Parameter()               #Damage quadratic term
     a3      = Parameter()               #Damage exponent
     damadj  = Parameter()               #Adjustment exponent in damage function
-    usedamadj::Bool = Parameter()       # Only the Excel version uses the damadj parameter
+    usedamadj = Parameter{Bool}()       # Only the Excel version uses the damadj parameter
 
     function run_timestep(p, v, d, t)
         #Define function for DAMFRAC

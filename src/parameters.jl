@@ -32,7 +32,7 @@ function getdice2013excelparameters(filename)
     p[:expcost2]    = getparams(f, "B39:B39", :single, "Base", 1)       #Exponent of control cost function
     p[:fco22x]      = getparams(f, "B80:B80", :single, "Base", 1)       #Forcings of equilibrium CO2 doubling (Wm-2)
     p[:forcoth]     = getparams(f, "B73:BI73", :all, "Base", T)         #Exogenous forcing for other greenhouse gases
-    p[:fosslim]     = getparams(f, "B57:B57", :single, "Base", 1)       #Maximum carbon resources (Gtc)
+    # p[:fosslim]     = getparams(f, "B57:B57", :single, "Base", 1)       #Maximum carbon resources (Gtc); not used in current model
     p[:gama]        = getparams(f, "B5:B5", :single, "Base", 1)         #Capitail Share
     p[:k0]          = getparams(f, "B12:B12", :single, "Base", 1)       #Initial capital
     p[:l]           = getparams(f, "B53:BI53", :all, "Base", T)         #Level of population and labor (millions)
