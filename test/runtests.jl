@@ -15,10 +15,10 @@ using MimiDICE2013: getparams
 
 @testset "MimiDICE2013-model" begin
 
-m = getdiceexcel();
+m = MimiDICE2013.get_model();
 run(m)
 
-f = readxlsx(joinpath(dirname(@__FILE__), "..", "Data", "DICE_2013_Excel.xlsm"))
+f = readxlsx(joinpath(dirname(@__FILE__), "..", "data", "DICE_2013_Excel.xlsm"))
 
 #Test Precision
 Precision = 1.0e-11
@@ -71,22 +71,22 @@ end #MimiDICE2013-model testset
 
 @testset "MimiDICE2013-integration" begin
 
-Precision = 1.0e-11
+Precision = 1.0e-10
 nullvalue = -999.999
 
-m = getdiceexcel();
+m = MimiDICE2013.get_model();
 run(m)
 
-for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
-    
+for c in map(nameof, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
+
     #load data for comparison
-    filepath = joinpath(@__DIR__, "../data/validation_data_v040/$c-$v.csv")        
+    filepath = joinpath(@__DIR__, "../data/validation_data_v040/$c-$v.csv")
     results = m[c, v]
 
     df = load(filepath) |> DataFrame
     if typeof(results) <: Number
         validation_results = df[1,1]
-        
+
     else
         validation_results = convert(Matrix, df)
 
@@ -95,7 +95,7 @@ for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
         results[isnan.(results)] .= nullvalue
         validation_results[ismissing.(validation_results)] .= nullvalue
         validation_results[isnan.(validation_results)] .= nullvalue
-  
+
         #match dimensions
         if size(validation_results,1) == 1
             validation_results = validation_results'
@@ -103,10 +103,49 @@ for c in map(name, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
 
     end
     @test results ≈ validation_results atol = Precision
-    
+
 end #for loop
 
 end #MimiDICE2013-integration testset
+
+@testset "Standard API" begin
+
+m = MimiDICE2013.get_model()
+run(m)
+
+# Test the errors
+@test_throws ErrorException MimiDICE2013.compute_scc()  # test that it errors if you don't specify a year
+@test_throws ErrorException MimiDICE2013.compute_scc(year=2021)  # test that it errors if the year isn't in the time index
+@test_throws ErrorException MimiDICE2013.compute_scc(last_year=2299)  # test that it errors if the last_year isn't in the time index
+@test_throws ErrorException MimiDICE2013.compute_scc(year=2105, last_year=2100)  # test that it errors if the year is after last_year
+
+# Test the SCC 
+scc1 = MimiDICE2013.compute_scc(year=2020)
+@test scc1 isa Float64
+
+# Test that it's smaller with a shorter horizon
+scc2 = MimiDICE2013.compute_scc(year=2020, last_year=2200)
+@test scc2 < scc1
+
+# Test that it's smaller with a larger prtp
+scc3 = MimiDICE2013.compute_scc(year=2020, last_year=2200, prtp=0.02)
+@test scc3 < scc2
+
+# Test with a modified model 
+m = MimiDICE2013.get_model()
+update_param!(m, :t2xco2, 5)    
+scc4 = MimiDICE2013.compute_scc(m, year=2020)
+@test scc4 > scc1   # Test that a higher value of climate sensitivty makes the SCC bigger
+
+# Test compute_scc_mm
+result = MimiDICE2013.compute_scc_mm(year=2030)
+@test result.scc isa Float64
+@test result.mm isa Mimi.MarginalModel
+marginal_temp = result.mm[:climatedynamics, :TATM]
+@test all(marginal_temp[1:findfirst(isequal(2030), MimiDICE2013.model_years)] .== 0.)
+@test all(marginal_temp[findfirst(isequal(2035), MimiDICE2013.model_years):end] .!= 0.)
+
+end
 
 end #MimiDICE2013 testset
 
