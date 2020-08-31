@@ -7,6 +7,8 @@ include("helpers.jl")
 include("parameters.jl")
 include("mcs.jl")
 include("marginaldamage.jl")
+include("montecarloscc.jl")
+include("mcsv2.jl")
 
 include("components/grosseconomy_component.jl")
 include("components/emissions_component.jl")
