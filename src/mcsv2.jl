@@ -4,7 +4,7 @@ function getsimv2()
 
     mcs_anderson_et_al_2012 = @defsim begin
 
-    # Using the method proposed by Anderson et al. (2012). Uncertainty in Integrated Assessment Modelling:Can Global Sensitivity Analysis Be of Help?. IEFE. https://ideas.repec.org/p/bcu/iefewp/iefewp52.html 
+    # Generate a random number simulation for the model parameters, using the method proposed by Anderson et al. (2012). Uncertainty in Integrated Assessment Modelling:Can Global Sensitivity Analysis Be of Help?. IEFE. https://ideas.repec.org/p/bcu/iefewp/iefewp52.html 
        
         a0 = Uniform(3.41785926,4.17738354)                          #Initial level of total factor productivity
         a2 = Uniform(0.0023973750000027,0.0029301250000033)          #Damage quadratic term
