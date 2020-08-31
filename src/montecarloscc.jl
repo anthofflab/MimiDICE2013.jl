@@ -1,12 +1,10 @@
+using Dates
+
+#This function runs a Monte Carlo Simulation, that includes a post trial function, which calculates de Social Cost of Carbon and allows to enter the rate of time preference,
+# prtp, and the elasticity of the marginal utility of consumption as uncertain input variables, check mcsv2.jl
+
 function monte_carlo_compute_scc(m::Model = MimiDICE2013.get_model(); year::Union{Int, Nothing} = nothing, trials = 100, output_dir = nothing, save_trials = false) 
-    dice_years = zeros(60)
-      for i in 1:60
-    if i == 1
-      dice_years[i] = 2010
-    else
-      dice_years[i] = dice_years[i - 1] +5
-      end
-    end
+    dice_years = 2010:5:2305
     
     year === nothing ? error("Must specify an emission year. Try `monte_carlo_compute_scc(m, year=2020)`.") : nothing
     !(year in dice_years) ? error("Cannot compute the scc for year $year, year must be within the model's time index $dice_years.") : nothing    
@@ -22,7 +20,7 @@ function monte_carlo_compute_scc(m::Model = MimiDICE2013.get_model(); year::Unio
     
     mcs = MimiDICE2013.getsimv2()
     last_year = dice_years[end]
-    mm = MimiDICE2013.get_marginal_model(year=2030)
+    mm = MimiDICE2013.get_marginal_model(year=year)
     
     function scc_calculation(mcs::SimulationInstance, trialnum::Int, ntimesteps::Int, ::Nothing)
 
@@ -38,9 +36,9 @@ function monte_carlo_compute_scc(m::Model = MimiDICE2013.get_model(); year::Unio
         eta = mm.base[:welfare, :elasmu]
         prtp = mm.base[:welfare, :prtp]
 
-        year_index = findfirst(isequal(2030), dice_years)
+        year_index = findfirst(isequal(year), dice_years)
 
-        df = [zeros(year_index-1)..., ((cpc[year_index]/cpc[i])^eta * 1/(1+prtp)^(t-2030) for (i,t) in enumerate(dice_years) if year<=t<=last_year)...]
+        df = [zeros(year_index-1)..., ((cpc[year_index]/cpc[i])^eta * 1/(1+prtp)^(t-year) for (i,t) in enumerate(dice_years) if year<=t<=last_year)...]
         scc = sum(df .* marginal_damages * 5)
 
         open(scc_file, "a") do f
