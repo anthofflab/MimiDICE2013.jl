@@ -21,7 +21,7 @@
             v.TATM[t] = p.tatm0
         else
             v.TATM[t] = v.TATM[t-1] + p.c1 * ((p.FORC[t] - (p.fco22x/p.t2xco2) * v.TATM[t-1]) - (p.c3 * (v.TATM[t-1] - v.TOCEAN[t-1])))
-            #Since a negative number powered to a fractional number is a complex number, we arise this exception, giving the smallest non-negative number to TATM, 0.  
+            #Since a negative number powered to a fractional number is a complex number, we arise this exception, giving the smallest non-negative number to TATM, 0. Check the damage component. 
             if p.a3 != 2
               v.TATM[t] = 0
             end 
