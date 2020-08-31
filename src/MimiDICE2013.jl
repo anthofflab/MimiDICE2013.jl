@@ -2,10 +2,10 @@ module MimiDICE2013
 
 using Mimi
 using ExcelReaders
+using Distributions
 
 include("helpers.jl")
 include("parameters.jl")
-include("mcs.jl")
 include("marginaldamage.jl")
 include("montecarloscc.jl")
 include("mcsv2.jl")
@@ -19,7 +19,7 @@ include("components/damages_component.jl")
 include("components/neteconomy_component.jl")
 include("components/welfare_component.jl")
 
-export constructdice, getdiceexcel, getdicegams, getsim, getsimv2
+export constructdice, getdiceexcel, getdicegams, getsim, getsimv2, monte_carlo_compute_scc
 
 const model_years = 2010:5:2305
 
