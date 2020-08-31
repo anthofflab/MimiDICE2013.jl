@@ -1,7 +1,7 @@
 using Dates
 
 #This function runs a Monte Carlo Simulation, that includes a post trial function, which calculates de Social Cost of Carbon and allows to enter the rate of time preference,
-# prtp, and the elasticity of the marginal utility of consumption as uncertain input variables, check mcsv2.jl
+# prtp, and the elasticity of the marginal utility of consumption, eta, as uncertain input variables, check mcsv2.jl
 
 function monte_carlo_compute_scc(m::Model = MimiDICE2013.get_model(); year::Union{Int, Nothing} = nothing, trials = 100, output_dir = nothing, save_trials = false) 
     dice_years = 2010:5:2305
