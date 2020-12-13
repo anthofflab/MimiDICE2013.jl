@@ -1,6 +1,6 @@
 name = "MimiDICE2013"
 uuid = "98fa84f0-42a6-11e9-254c-d7945e8c710f"
-version = "1.0.1"
+version = "1.0.2-DEV"
 
 [deps]
 ExcelReaders = "c04bee98-12a5-510c-87df-2a230cb6e075"
