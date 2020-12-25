@@ -1,5 +1,5 @@
 using Test
-using ExcelReaders
+using XLSX: readxlsx
 using DataFrames
 using Mimi
 using MimiDICE2013
@@ -18,7 +18,7 @@ using MimiDICE2013: getparams
 m = MimiDICE2013.get_model();
 run(m)
 
-f = openxl(joinpath(dirname(@__FILE__), "..", "data", "DICE_2013_Excel.xlsm"))
+f = readxlsx(joinpath(dirname(@__FILE__), "..", "data", "DICE_2013_Excel.xlsm"))
 
 #Test Precision
 Precision = 1.0e-11
