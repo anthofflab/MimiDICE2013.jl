@@ -5,12 +5,12 @@ Computes the social cost of CO2 for an emissions pulse in `year` for the provide
 If no model is provided, the default model from MimiDICE2013.get_model() is used.
 Constant discounting is used from the specified pure rate of time preference `prtp`.
 """
-function compute_scc(m::Model=get_model(); year::Union{Int, Nothing} = nothing, last_year::Int = model_years[end], prtp::Float64 = 0.015, eta=1.45)
+function compute_scc(m::Model=get_model(); year::Union{Int,Nothing}=nothing, last_year::Int=model_years[end], prtp::Float64=0.015, eta=1.45)
     year === nothing ? error("Must specify an emission year. Try `compute_scc(m, year=2020)`.") : nothing
     !(last_year in model_years) ? error("Invlaid value of $last_year for last_year. last_year must be within the model's time index $model_years.") : nothing
     !(year in model_years[1]:5:last_year) ? error("Cannot compute the scc for year $year, year must be within the model's time index $(model_years[1]):5:$last_year.") : nothing
 
-    mm = get_marginal_model(m; year = year)
+    mm = get_marginal_model(m; year=year)
 
     return _compute_scc(mm, year=year, last_year=last_year, prtp=prtp, eta=eta)
 end
@@ -23,12 +23,12 @@ Computes the social cost of CO2 for an emissions pulse in `year` for the provide
 If no model is provided, the default model from MimiDICE2013.get_model() is used.
 Constant discounting is used from the specified pure rate of time preference `prtp`.
 """
-function compute_scc_mm(m::Model=get_model(); year::Union{Int, Nothing} = nothing, last_year::Int = model_years[end], prtp::Float64 = 0.015, eta=1.45)
+function compute_scc_mm(m::Model=get_model(); year::Union{Int,Nothing}=nothing, last_year::Int=model_years[end], prtp::Float64=0.015, eta=1.45)
     year === nothing ? error("Must specify an emission year. Try `compute_scc_mm(m, year=2020)`.") : nothing
     !(last_year in model_years) ? error("Invlaid value of $last_year for last_year. last_year must be within the model's time index $model_years.") : nothing
     !(year in model_years[1]:5:last_year) ? error("Cannot compute the scc for year $year, year must be within the model's time index $(model_years[1]):5:$last_year.") : nothing
 
-    mm = get_marginal_model(m; year = year)
+    mm = get_marginal_model(m; year=year)
     scc = _compute_scc(mm; year=year, last_year=last_year, prtp=prtp, eta=eta)
     
     return (scc = scc, mm = mm)
@@ -45,7 +45,7 @@ function _compute_scc(mm::MarginalModel; year::Int, last_year::Int, prtp::Float6
 
     year_index = findfirst(isequal(year), model_years)
 
-    df = [zeros(year_index-1)..., ((cpc[year_index]/cpc[i])^eta * 1/(1+prtp)^(t-year) for (i,t) in enumerate(model_years) if year<=t<=last_year)...]
+    df = [zeros(year_index - 1)..., ((cpc[year_index] / cpc[i])^eta * 1 / (1 + prtp)^(t - year) for (i, t) in enumerate(model_years) if year <= t <= last_year)...]
     scc = sum(df .* marginal_damages * 5)  # currently implemented as a 5year step function; so each timestep of discounted marginal damages is multiplied by 5
     return scc
 end
@@ -56,7 +56,7 @@ get_marginal_model(m::Model = get_model(); year::Int = nothing)
 Creates a Mimi MarginalModel where the provided m is the base model, and the marginal model has additional emissions of CO2 in year `year`.
 If no Model m is provided, the default model from MimiDICE2013.get_model() is used as the base model.
 """
-function get_marginal_model(m::Model=get_model(); year::Union{Int, Nothing} = nothing)
+function get_marginal_model(m::Model=get_model(); year::Union{Int,Nothing}=nothing)
     year === nothing ? error("Must specify an emission year. Try `get_marginal_model(m, year=2015)`.") : nothing
     !(year in model_years) ? error("Cannot add marginal emissions in $year, year must be within the model's time index $(model_years[1]):10:$last_year.") : nothing
 

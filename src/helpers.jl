@@ -1,4 +1,4 @@
-#Timestep conversion function
+# Timestep conversion function
 function getindexfromyear_dice_2013(year)
     baseyear = 2010
 
@@ -11,13 +11,13 @@ end
 
 
 
-#Get parameters from DICE2013 excel sheet
-#range is the range of cell values on the excel sheet and must be a string, "B56:B77"
-#parameters = :single for just one value, or :all for entire time series
-#sheet is the sheet in the excel file to reference (i.e. "Base")
-#T is the length of the time period (i.e 60)
+# Get parameters from DICE2013 excel sheet
+# range is the range of cell values on the excel sheet and must be a string, "B56:B77"
+# parameters = :single for just one value, or :all for entire time series
+# sheet is the sheet in the excel file to reference (i.e. "Base")
+# T is the length of the time period (i.e 60)
 
-#example:   getparams("B15:BI15", :all, "Base",  60)
+# example:   getparams("B15:BI15", :all, "Base",  60)
 
 
 function getparams(f, range::String, parameters::Symbol, sheet::String, T)
@@ -36,7 +36,7 @@ function getparams(f, range::String, parameters::Symbol, sheet::String, T)
         end
 
         dims = length(size(data))
-        vals = Array{Float64, dims}(data)
+        vals = Array{Float64,dims}(data)
     end
 
     return vals

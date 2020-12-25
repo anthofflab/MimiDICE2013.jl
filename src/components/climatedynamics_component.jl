@@ -14,18 +14,18 @@
     c4 = Parameter()                    # Coefficient of heat gain by deep oceans.
 
     function run_timestep(p, v, d, t)
-        #Define function for TATM
+        # Define function for TATM
         if is_first(t)
             v.TATM[t] = p.tatm0
         else
-            v.TATM[t] = v.TATM[t-1] + p.c1 * ((p.FORC[t] - (p.fco22x/p.t2xco2) * v.TATM[t-1]) - (p.c3 * (v.TATM[t-1] - v.TOCEAN[t-1])))
+            v.TATM[t] = v.TATM[t - 1] + p.c1 * ((p.FORC[t] - (p.fco22x / p.t2xco2) * v.TATM[t - 1]) - (p.c3 * (v.TATM[t - 1] - v.TOCEAN[t - 1])))
         end
 
-        #Define function for TOCEAN
+        # Define function for TOCEAN
         if is_first(t)
             v.TOCEAN[t] = p.tocean0
         else
-            v.TOCEAN[t] = v.TOCEAN[t-1] + p.c4 * (v.TATM[t-1] - v.TOCEAN[t-1])
+            v.TOCEAN[t] = v.TOCEAN[t - 1] + p.c4 * (v.TATM[t - 1] - v.TOCEAN[t - 1])
         end
     end
 end
