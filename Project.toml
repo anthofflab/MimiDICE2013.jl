@@ -1,10 +1,10 @@
 name = "MimiDICE2013"
 uuid = "98fa84f0-42a6-11e9-254c-d7945e8c710f"
-version = "1.0.2-DEV"
+version = "1.0.2"
 
 [deps]
-Mimi = "e4e893b0-ee5e-52ea-8111-44b3bdec128c"
 XLSX = "fdbf4ff8-1666-58a4-91e7-1b58723a45e0"
+Mimi = "e4e893b0-ee5e-52ea-8111-44b3bdec128c"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
