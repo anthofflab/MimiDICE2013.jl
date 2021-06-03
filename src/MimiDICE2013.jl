@@ -26,9 +26,9 @@ function constructdice(params)
     m = Model()
     set_dimension!(m, :time, model_years)
 
-    #--------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
     # Add components in order
-    #--------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
 
     add_comp!(m, grosseconomy, :grosseconomy)
     add_comp!(m, emissions, :emissions)
@@ -39,9 +39,9 @@ function constructdice(params)
     add_comp!(m, neteconomy, :neteconomy)
     add_comp!(m, welfare, :welfare)
 
-    #--------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
     # Make internal parameter connections
-    #--------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
 
     # Emissions
     connect_param!(m, :grosseconomy, :I, :neteconomy, :I)
@@ -59,9 +59,9 @@ function constructdice(params)
     connect_param!(m, :neteconomy, :DAMAGES, :damages, :DAMAGES)
     connect_param!(m, :welfare, :CPC, :neteconomy, :CPC)
 
-    #--------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
     # Set external parameter values 
-    #--------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
     for (name, value) in params
         set_param!(m, name, value)
     end
@@ -70,7 +70,7 @@ function constructdice(params)
 
 end
 
-function getdiceexcel(;datafile = joinpath(dirname(@__FILE__), "..", "data", "DICE_2013_Excel.xlsm"))
+function getdiceexcel(;datafile=joinpath(dirname(@__FILE__), "..", "data", "DICE_2013_Excel.xlsm"))
     params = getdice2013excelparameters(datafile)
 
     m = constructdice(params)
@@ -78,7 +78,7 @@ function getdiceexcel(;datafile = joinpath(dirname(@__FILE__), "..", "data", "DI
     return m
 end
 
-function getdicegams(;datafile = joinpath(dirname(@__FILE__), "..", "data", "DICE2013_IAMF_Parameters.xlsx"))
+function getdicegams(;datafile=joinpath(dirname(@__FILE__), "..", "data", "DICE2013_IAMF_Parameters.xlsx"))
     params = getdice2013gamsparameters(datafile)
 
     m = constructdice(params)

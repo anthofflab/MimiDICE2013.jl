@@ -11,4 +11,4 @@ mcs = @defsim begin
     save(damages.DAMAGES)
 end
 
-res = run(mcs, m, 1000; trials_output_filename = "/tmp/dice-2013/trialdata.csv", results_output_dir="/tmp/dice-2013")
+res = run(mcs, m, 1000; trials_output_filename="/tmp/dice-2013/trialdata.csv", results_output_dir="/tmp/dice-2013")
