@@ -67,7 +67,7 @@ function get_marginal_model(m::Model=get_model(); year::Union{Int,Nothing}=nothi
 end
 
 """
-Adds a marginal emission component to year m which adds 1Gt of additional CO2 emissions per year for ten years starting in the specified `year`.
+Adds a marginal emission component to year m which adds 1Gt of additional CO2 emissions per year for five years starting in the specified `year`.
 """
 function add_marginal_emissions!(m::Model, year::Int) 
     add_comp!(m, Mimi.adder, :marginalemission, before=:co2cycle)
