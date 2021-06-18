@@ -154,7 +154,7 @@ using MimiDICE2013: getparams
     # ------------------------------------------------------------------------------
     @testset "SCC values" begin
 
-        atol = 1e-6 # TODO what is a reasonable tolerance given we test on a few different machines etc.
+        atol = 1e-4 # TODO what is a reasonable tolerance given we test on a few different machines etc.
 
         # Test several validation configurations against the pre-saved values from MimiDICE2013
         specs = Dict([
@@ -178,7 +178,8 @@ using MimiDICE2013: getparams
         end
             
         validation_results = load(joinpath(@__DIR__, "..", "data", "SC validation data", "deterministic_sc_values_v1-0-2.csv")) |> DataFrame
-        # println("MAXIMUM DIFF IS $(maximum(results[!, :SC] - validation_results[!, :SC]))")
+        # diffs = sort(results[!, :SC] - validation_results[!, :SC], rev = true)
+        # println(diffs)
         @test all(isapprox.(results[!, :SC], validation_results[!, :SC], atol = atol))
 
     end # SCC values testset
