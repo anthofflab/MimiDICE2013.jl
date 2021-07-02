@@ -1,11 +1,11 @@
 using Test
-using XLSX: readxlsx
+using XLSX:readxlsx
 using DataFrames
 using Mimi
 using MimiDICE2013
 using CSVFiles
 
-using MimiDICE2013: getparams
+using MimiDICE2013:getparams
 
 @testset "MimiDICE2013" begin
 
@@ -73,7 +73,7 @@ using MimiDICE2013: getparams
         nullvalue = -999.999
 
         m = MimiDICE2013.get_model();
-        run(m)
+            run(m)
 
         for c in map(nameof, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
 
@@ -164,7 +164,7 @@ using MimiDICE2013: getparams
             :last_year => [2200, 2305],
         ])
         
-        results = DataFrame(year = [], eta = [], prtp = [], last_year = [], SC = [])
+        results = DataFrame(year=[], eta=[], prtp=[], last_year=[], SC=[])
         
         for year in specs[:year]
             for eta in specs[:eta]
@@ -180,7 +180,7 @@ using MimiDICE2013: getparams
         validation_results = load(joinpath(@__DIR__, "..", "data", "SC validation data", "deterministic_sc_values_v1-0-2.csv")) |> DataFrame
         # diffs = sort(results[!, :SC] - validation_results[!, :SC], rev = true)
         # println(diffs)
-        @test all(isapprox.(results[!, :SC], validation_results[!, :SC], atol = atol))
+        @test all(isapprox.(results[!, :SC], validation_results[!, :SC], atol=atol))
 
     end # SCC values testset
 end # MimiDICE2013 testset

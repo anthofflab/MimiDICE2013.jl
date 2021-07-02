@@ -1,4 +1,4 @@
-using XLSX: readxlsx
+using XLSX:readxlsx
 
 function getdice2013excelparameters(filename)
     p = Dict{Symbol,Any}()
