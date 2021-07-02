@@ -9,9 +9,9 @@ using MimiDICE2013: getparams
 
 @testset "MimiDICE2013" begin
 
-# ------------------------------------------------------------------------------
-#   1. Run tests on the whole model
-# ------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------
+    #   1. Run tests on the whole model
+    # ------------------------------------------------------------------------------
 
     @testset "MimiDICE2013-model" begin
 
@@ -63,12 +63,10 @@ using MimiDICE2013: getparams
 
     end # MimiDICE2013-model testset
 
-
-# ------------------------------------------------------------------------------
-#   2. Run tests to make sure integration version (Mimi v0.5.0)
-#   values match Mimi 0.4.0 values
-# ------------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------------
+    #   2. Run tests to make sure integration version (Mimi v0.5.0)
+    #   values match Mimi 0.4.0 values
+    # ------------------------------------------------------------------------------
     @testset "MimiDICE2013-integration" begin
 
         Precision = 1.0e-10
@@ -109,6 +107,9 @@ using MimiDICE2013: getparams
 
     end # MimiDICE2013-integration testset
 
+    # ------------------------------------------------------------------------------
+    #   3. Standard API
+    # ------------------------------------------------------------------------------
     @testset "Standard API" begin
 
         m = MimiDICE2013.get_model()
@@ -148,6 +149,40 @@ using MimiDICE2013: getparams
 
     end
 
+    # ------------------------------------------------------------------------------
+    #   4. Deterministic SCC values
+    # ------------------------------------------------------------------------------
+    @testset "SCC values" begin
+
+        atol = 1e-4 # TODO what is a reasonable tolerance given we test on a few different machines etc.
+
+        # Test several validation configurations against the pre-saved values from MimiDICE2013
+        specs = Dict([
+            :year => [2020, 2050],
+            :eta => [0, 1.5],
+            :prtp => [0.015, 0.03],
+            :last_year => [2200, 2305],
+        ])
+        
+        results = DataFrame(year = [], eta = [], prtp = [], last_year = [], SC = [])
+        
+        for year in specs[:year]
+            for eta in specs[:eta]
+                for prtp in specs[:prtp]
+                    for last_year in specs[:last_year]
+                        sc = MimiDICE2013.compute_scc(year=Int(year), eta=eta, prtp=prtp, last_year=Int(last_year))
+                        push!(results, (year, eta, prtp, last_year, sc))
+                    end
+                end
+            end
+        end
+            
+        validation_results = load(joinpath(@__DIR__, "..", "data", "SC validation data", "deterministic_sc_values_v1-0-2.csv")) |> DataFrame
+        # diffs = sort(results[!, :SC] - validation_results[!, :SC], rev = true)
+        # println(diffs)
+        @test all(isapprox.(results[!, :SC], validation_results[!, :SC], atol = atol))
+
+    end # SCC values testset
 end # MimiDICE2013 testset
 
 nothing
