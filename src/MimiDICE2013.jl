@@ -1,7 +1,7 @@
 module MimiDICE2013
 
 using Mimi
-using XLSX: readxlsx
+using XLSX:readxlsx
 
 include("helpers.jl")
 include("parameters.jl")

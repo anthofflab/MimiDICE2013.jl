@@ -67,7 +67,7 @@ function get_marginal_model(m::Model=get_model(); year::Union{Int,Nothing}=nothi
     # dollars per ton, as long as `pulse_size` is in tons
     mm = create_marginal_model(m, 5 * 1e9)    # 1 GtCO2 per year for 5 years, so 5 * 10^9
     add_marginal_emissions!(mm.modified, year)
-
+    
     return mm
 end
 
