@@ -21,7 +21,7 @@ export constructdice, getdiceexcel, getdicegams
 
 const model_years = 2010:5:2305
 
-function constructdice(params)
+function constructdice(params_dict)
 
     m = Model()
     set_dimension!(m, :time, model_years)
@@ -62,26 +62,48 @@ function constructdice(params)
     # --------------------------------------------------------------------------
     # Set external parameter values 
     # --------------------------------------------------------------------------
-    for (name, value) in params
-        set_param!(m, name, value)
+
+    # Set unshared parameters - name is a Tuple{Symbol, Symbol} of (component_name, param_name)
+    for (name, value) in params_dict[:unshared]
+        update_param!(m, name[1], name[2], value)
     end
+
+    # Set shared parameters - name is a Symbol representing the param_name, here
+     # we will create a shared model parameter with the same name as the component
+     # parameter and then connect our component parameters to this shared model parameter
+
+     # * for convenience later, name shared model parameter same as the component 
+     # parameters, but this is not required could give a unique name *
+
+     add_shared_param!(m, :fco22x, params_dict[:shared][:fco22x])
+     connect_param!(m, :climatedynamics, :fco22x, :fco22x)
+     connect_param!(m, :radiativeforcing, :fco22x, :fco22x)
+
+     add_shared_param!(m, :MIU, params_dict[:shared][:MIU], dims = [:time])
+     connect_param!(m, :neteconomy, :MIU, :MIU)
+     connect_param!(m, :emissions, :MIU, :MIU)
+
+     add_shared_param!(m, :l, params_dict[:shared][:l], dims = [:time])
+     connect_param!(m, :neteconomy, :l, :l)
+     connect_param!(m, :grosseconomy, :l, :l)
+     connect_param!(m, :welfare, :l, :l)
 
     return m
 
 end
 
 function getdiceexcel(;datafile=joinpath(dirname(@__FILE__), "..", "data", "DICE_2013_Excel.xlsm"))
-    params = getdice2013excelparameters(datafile)
+    params_dict = getdice2013excelparameters(datafile)
 
-    m = constructdice(params)
+    m = constructdice(params_dict)
 
     return m
 end
 
 function getdicegams(;datafile=joinpath(dirname(@__FILE__), "..", "data", "DICE2013_IAMF_Parameters.xlsx"))
-    params = getdice2013gamsparameters(datafile)
+    params_dict = getdice2013gamsparameters(datafile)
 
-    m = constructdice(params)
+    m = constructdice(params_dict)
 
     return m
 end

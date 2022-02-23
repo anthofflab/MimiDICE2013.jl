@@ -83,7 +83,7 @@ function add_marginal_emissions!(m::Model, year::Int)
     addem = zeros(length(time))
     addem[time[year]] = 1.0     # 1 GtCO2 per year for five years
 
-    set_param!(m, :marginalemission, :add, addem)
+    update_param!(m, :marginalemission, :add, addem)
     connect_param!(m, :marginalemission, :input, :emissions, :E)
     connect_param!(m, :co2cycle, :E, :marginalemission, :output)
 end
@@ -106,7 +106,7 @@ function getmarginal_dice_models(;emissionyear=2010)
     addem = zeros(length(time))
     addem[time[emissionyear]] = 1.0
 
-    set_param!(m2, :marginalemission, :add, addem)
+    update_param!(m2, :marginalemission, :add, addem)
     connect_param!(m2, :marginalemission, :input, :emissions, :E)
     connect_param!(m2, :co2cycle, :E, :marginalemission, :output)
 
