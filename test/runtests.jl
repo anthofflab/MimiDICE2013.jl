@@ -15,7 +15,7 @@ using MimiDICE2013: getparams
 
     @testset "MimiDICE2013-model" begin
 
-        m = MimiDICE2013.get_model();
+        m = MimiDICE2013.get_model()
         run(m)
 
         f = readxlsx(joinpath(dirname(@__FILE__), "..", "data", "DICE_2013_Excel.xlsm"))
@@ -27,38 +27,38 @@ using MimiDICE2013: getparams
         T = 60
 
         # TATM Test (temperature increase)
-        True_TATM = getparams(f, "B99:BI99", :all, "Base", T);
+        True_TATM = getparams(f, "B99:BI99", :all, "Base", T)
         @test maximum(abs, m[:climatedynamics, :TATM] .- True_TATM) ≈ 0. atol = Precision
 
         # MAT Test (carbon concentration atmosphere)
-        True_MAT = getparams(f, "B87:BI87", :all, "Base", T);
+        True_MAT = getparams(f, "B87:BI87", :all, "Base", T)
         @test maximum(abs, m[:co2cycle, :MAT] .- True_MAT) ≈ 0. atol = Precision
 
         # DAMFRAC Test (damages fraction)
-        True_DAMFRAC = getparams(f, "B105:BI105", :all, "Base", T);
+        True_DAMFRAC = getparams(f, "B105:BI105", :all, "Base", T)
         @test maximum(abs, m[:damages, :DAMFRAC] .- True_DAMFRAC) ≈ 0. atol = Precision
 
         # DAMAGES Test (damages $)
-        True_DAMAGES = getparams(f, "B106:BI106", :all, "Base", T);
+        True_DAMAGES = getparams(f, "B106:BI106", :all, "Base", T)
         @test maximum(abs, m[:damages, :DAMAGES] .- True_DAMAGES) ≈ 0. atol = Precision
 
         # E Test (emissions)
-        True_E = getparams(f, "B112:BI112", :all, "Base", T);
+        True_E = getparams(f, "B112:BI112", :all, "Base", T)
         @test maximum(abs, m[:emissions, :E] .- True_E) ≈ 0. atol = Precision
 
         # YGROSS Test (gross output)
-        True_YGROSS = getparams(f, "B104:BI104", :all, "Base", T);
+        True_YGROSS = getparams(f, "B104:BI104", :all, "Base", T)
         @test maximum(abs, m[:grosseconomy, :YGROSS] .- True_YGROSS) ≈ 0. atol = Precision
 
         # CPC Test (per capita consumption)
-        True_CPC = getparams(f, "B126:BI126", :all, "Base", T);
+        True_CPC = getparams(f, "B126:BI126", :all, "Base", T)
         @test maximum(abs, m[:neteconomy, :CPC] .- True_CPC) ≈ 0. atol = Precision
 
         # FORC Test (radiative forcing)
-        True_FORC = getparams(f, "B100:BI100", :all, "Base", T);
+        True_FORC = getparams(f, "B100:BI100", :all, "Base", T)
         @test maximum(abs, m[:radiativeforcing, :FORC] .- True_FORC) ≈ 0. atol = Precision
 
-        True_UTILITY = getparams(f, "B129:B129", :single, "Base", T);
+        True_UTILITY = getparams(f, "B129:B129", :single, "Base", T)
         @test maximum(abs, m[:welfare, :UTILITY] .- True_UTILITY) ≈ 0. atol = Precision
 
     end # MimiDICE2013-model testset
@@ -72,7 +72,7 @@ using MimiDICE2013: getparams
         Precision = 1.0e-10
         nullvalue = -999.999
 
-        m = MimiDICE2013.get_model();
+        m = MimiDICE2013.get_model()
         run(m)
 
         for c in map(nameof, Mimi.compdefs(m)), v in Mimi.variable_names(m, c)
@@ -83,8 +83,8 @@ using MimiDICE2013: getparams
 
             df = load(filepath) |> DataFrame
             if typeof(results) <: Number
-                validation_results = df[1,1]
-        
+                validation_results = df[1, 1]
+
             else
                 validation_results = Matrix(df)
 
@@ -95,7 +95,7 @@ using MimiDICE2013: getparams
                 validation_results[isnan.(validation_results)] .= nullvalue
 
                 # match dimensions
-        
+
                 if size(validation_results, 1) == 1
                     validation_results = validation_results'
                 end
@@ -135,10 +135,10 @@ using MimiDICE2013: getparams
 
         # Test with a modified model 
         m = MimiDICE2013.get_model()
-        update_param!(m, :climatedynamics, :t2xco2, 5)    
+        update_param!(m, :climatedynamics, :t2xco2, 5)
         scc4 = MimiDICE2013.compute_scc(m, year=2020)
         @test scc4 > scc1   # Test that a higher value of climate sensitivty makes the SCC bigger
-      
+
         # Test compute_scc_mm
         result = MimiDICE2013.compute_scc_mm(year=2030)
         @test result.scc isa Float64
@@ -163,9 +163,9 @@ using MimiDICE2013: getparams
             :prtp => [0.015, 0.03],
             :last_year => [2200, 2305],
         ])
-        
-        results = DataFrame(year = [], eta = [], prtp = [], last_year = [], SC = [])
-        
+
+        results = DataFrame(year=[], eta=[], prtp=[], last_year=[], SC=[])
+
         for year in specs[:year]
             for eta in specs[:eta]
                 for prtp in specs[:prtp]
@@ -176,11 +176,11 @@ using MimiDICE2013: getparams
                 end
             end
         end
-            
+
         validation_results = load(joinpath(@__DIR__, "..", "data", "SC validation data", "deterministic_sc_values_v1-0-2.csv")) |> DataFrame
         # diffs = sort(results[!, :SC] - validation_results[!, :SC], rev = true)
         # println(diffs)
-        @test all(isapprox.(results[!, :SC], validation_results[!, :SC], atol = atol))
+        @test all(isapprox.(results[!, :SC], validation_results[!, :SC], atol=atol))
 
     end # SCC values testset
 end # MimiDICE2013 testset

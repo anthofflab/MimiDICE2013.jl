@@ -69,30 +69,30 @@ function constructdice(params_dict)
     end
 
     # Set shared parameters - name is a Symbol representing the param_name, here
-     # we will create a shared model parameter with the same name as the component
-     # parameter and then connect our component parameters to this shared model parameter
+    # we will create a shared model parameter with the same name as the component
+    # parameter and then connect our component parameters to this shared model parameter
 
-     # * for convenience later, name shared model parameter same as the component 
-     # parameters, but this is not required could give a unique name *
+    # * for convenience later, name shared model parameter same as the component 
+    # parameters, but this is not required could give a unique name *
 
-     add_shared_param!(m, :fco22x, params_dict[:shared][:fco22x])
-     connect_param!(m, :climatedynamics, :fco22x, :fco22x)
-     connect_param!(m, :radiativeforcing, :fco22x, :fco22x)
+    add_shared_param!(m, :fco22x, params_dict[:shared][:fco22x])
+    connect_param!(m, :climatedynamics, :fco22x, :fco22x)
+    connect_param!(m, :radiativeforcing, :fco22x, :fco22x)
 
-     add_shared_param!(m, :MIU, params_dict[:shared][:MIU], dims = [:time])
-     connect_param!(m, :neteconomy, :MIU, :MIU)
-     connect_param!(m, :emissions, :MIU, :MIU)
+    add_shared_param!(m, :MIU, params_dict[:shared][:MIU], dims=[:time])
+    connect_param!(m, :neteconomy, :MIU, :MIU)
+    connect_param!(m, :emissions, :MIU, :MIU)
 
-     add_shared_param!(m, :l, params_dict[:shared][:l], dims = [:time])
-     connect_param!(m, :neteconomy, :l, :l)
-     connect_param!(m, :grosseconomy, :l, :l)
-     connect_param!(m, :welfare, :l, :l)
+    add_shared_param!(m, :l, params_dict[:shared][:l], dims=[:time])
+    connect_param!(m, :neteconomy, :l, :l)
+    connect_param!(m, :grosseconomy, :l, :l)
+    connect_param!(m, :welfare, :l, :l)
 
     return m
 
 end
 
-function getdiceexcel(;datafile=joinpath(dirname(@__FILE__), "..", "data", "DICE_2013_Excel.xlsm"))
+function getdiceexcel(; datafile=joinpath(dirname(@__FILE__), "..", "data", "DICE_2013_Excel.xlsm"))
     params_dict = getdice2013excelparameters(datafile)
 
     m = constructdice(params_dict)
@@ -100,7 +100,7 @@ function getdiceexcel(;datafile=joinpath(dirname(@__FILE__), "..", "data", "DICE
     return m
 end
 
-function getdicegams(;datafile=joinpath(dirname(@__FILE__), "..", "data", "DICE2013_IAMF_Parameters.xlsx"))
+function getdicegams(; datafile=joinpath(dirname(@__FILE__), "..", "data", "DICE2013_IAMF_Parameters.xlsx"))
     params_dict = getdice2013gamsparameters(datafile)
 
     m = constructdice(params_dict)

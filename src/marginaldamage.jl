@@ -30,8 +30,8 @@ function compute_scc_mm(m::Model=get_model(); year::Union{Int,Nothing}=nothing, 
 
     mm = get_marginal_model(m; year=year)
     scc = _compute_scc(mm; year=year, last_year=last_year, prtp=prtp, eta=eta)
-    
-    return (scc = scc, mm = mm)
+
+    return (scc=scc, mm=mm)
 end
 
 # helper function for computing SCC from a MarginalModel, not to be exported or advertised to users
@@ -76,7 +76,7 @@ end
 
 Adds a marginal emission component to year m which adds 1Gt of additional CO2 emissions per year for five years starting in the specified `year`.
 """
-function add_marginal_emissions!(m::Model, year::Int) 
+function add_marginal_emissions!(m::Model, year::Int)
     add_comp!(m, Mimi.adder, :marginalemission, before=:co2cycle)
 
     time = Mimi.dimension(m, :time)
@@ -91,11 +91,11 @@ end
 
 
 # Old available marginal model function 
-function getmarginal_dice_models(;emissionyear=2010)
+function getmarginal_dice_models(; emissionyear=2010)
 
     DICE = constructdice()
     run(DICE)
-    
+
     mm = MarginalModel(DICE)
     m1 = mm.base
     m2 = mm.modified
