@@ -15,7 +15,7 @@ specs = Dict([
     :last_year => [2200, 2305],
 ])
 
-results = DataFrame(year = [], eta = [], prtp = [], last_year = [], SC = [])
+results = DataFrame(year=[], eta=[], prtp=[], last_year=[], SC=[])
 
 for year in specs[:year]
     for eta in specs[:eta]
